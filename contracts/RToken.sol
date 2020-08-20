@@ -4,9 +4,9 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 
-contract Ratio is ERC20, Ownable {
+contract RToken is ERC20, Ownable {
 
-	constructor() ERC20("Ratio", "RAT") public {
+	constructor(string memory name, string memory symbol) ERC20(name, symbol) public {
 	}
 
 	function mint(address account, uint amount) public onlyOwner {
