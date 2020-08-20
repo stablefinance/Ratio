@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: UNLICENSED
+
 pragma solidity 0.6.8;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -74,7 +76,6 @@ contract CollateralPool is Ownable  {
 		} else {
 			if (amount > 0) {			
 				uint minted = amount.mul(_constRate).div(rate);
-				uint left = minted.sub(amount);
 				RToken(asset).mint(msg.sender, afterFee);
 				RToken(asset).mint(address(this), minted);
 				IERC20(asset).transferFrom(msg.sender, address(this), amount);
@@ -120,7 +121,7 @@ contract CollateralPool is Ownable  {
 		uint toClaim = fees[asset].sub(claimed[asset][msg.sender]);
 		uint share = toClaim.mul(_ratio.balanceOf(msg.sender)).div(_ratio.totalSupply());
 		claimed[asset][msg.sender] = fees[asset];
-		IERC20(asset).transferFrom(address(this), msg.sender, toClaim);
-		emit Claim(msg.sender, asset, toClaim);
+		IERC20(asset).transferFrom(address(this), msg.sender, share);
+		emit Claim(msg.sender, asset, share);
 	}
 }
